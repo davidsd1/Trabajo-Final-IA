@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador de Cajero Automático</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .atm-container {
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      text-align: center;
+    }
+    button {
+      margin: 10px;
+      padding: 10px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<div class="atm-container">
+  <h2>Simulador de Cajero Automático</h2>
+  <label for="user">Ingrese su ID de Usuario:</label>
+  <input type="text" id="user" placeholder="ID de Usuario">
+  <button onclick="validarUsuario()">Iniciar Sesión</button>
+
+  <div id="operaciones" style="display: none;">
+    <button onclick="consultarSaldo()">Consultar Saldo</button>
+    <button onclick="retirar()">Retirar</button>
+    <button onclick="consignar()">Consignar</button>
+    <button onclick="imprimirSaldo()">Imprimir Saldo</button>
+    <button onclick="salir()">Salir</button>
+  </div>
+
+  <p id="mensaje"></p>
+</div>
+
+<script>
+// Variables y funciones en español
+
+let saldo = 0;  // Saldo inicial en 0
+let usuarioLogueado = false;
+
+// Función para validar el usuario
+function validarUsuario() {
+  const userId = document.getElementById('user').value;
+  
+  if (userId === 'david12345') { // Validación simple
+    usuarioLogueado = true;
+    document.getElementById('operaciones').style.display = 'block';
+    document.getElementById('mensaje').innerText = "Usuario validado. ¡Bienvenido!";
+  } else {
+    document.getElementById('mensaje').innerText = "Usuario inválido. Intente nuevamente.";
+  }
+}
+
+// Función para consultar el saldo
+function consultarSaldo() {
+  if (usuarioLogueado) {
+    document.getElementById('mensaje').innerText = `Su saldo es: $${saldo}`;
+  }
+}
+
+// Función para retirar dinero
+function retirar() {
+  if (usuarioLogueado) {
+    let cantidad = parseFloat(prompt("Ingrese la cantidad a retirar:"));
+    
+    if (cantidad > saldo) {
+      document.getElementById('mensaje').innerText = "¡Fondos insuficientes!";
+    } else {
+      saldo -= cantidad;
+      document.getElementById('mensaje').innerText = `Ha retirado $${cantidad}. Su nuevo saldo es $${saldo}.`;
+    }
+  }
+}
+
+// Función para consignar dinero
+function consignar() {
+  if (usuarioLogueado) {
+    let cantidad = parseFloat(prompt("Ingrese la cantidad a consignar:"));
+    
+    if (cantidad > 0) {
+      saldo += cantidad;
+      document.getElementById('mensaje').innerText = `Ha consignado $${cantidad}. Su nuevo saldo es $${saldo}.`;
+    } else {
+      document.getElementById('mensaje').innerText = "¡Cantidad inválida para consignar!";
+    }
+  }
+}
+
+// Función para imprimir el saldo actual
+function imprimirSaldo() {
+  if (usuarioLogueado) {
+    document.getElementById('mensaje').innerText = `Saldo actual: $${saldo}`;
+  }
+}
+
+// Función para salir del cajero
+function salir() {
+  if (usuarioLogueado) {
+    document.getElementById('mensaje').innerText = "Gracias por usar nuestro cajero. ¡Hasta luego!";
+    document.getElementById('operaciones').style.display = 'none';
+    usuarioLogueado = false;
+  }
+}
+</script>
+
+</body>
+</html>
